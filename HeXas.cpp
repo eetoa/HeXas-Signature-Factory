@@ -6,7 +6,7 @@ namespace Info {
     using namespace std;
     inline void printHelp()
     {
-        cout << "Help Information" << endl;
+        cout << "Help Information" << endl << endl;
     }
 }
 
@@ -108,7 +108,7 @@ void GetProcHandle() {
 void GetProcId()
 {
     DWORD procId = 0;
-    const wchar_t* procName = CharToWchar(g_procName);
+    const wchar_t* procName = CharToWchar(g_procName.c_str());
     HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
     if (hSnap != INVALID_HANDLE_VALUE)
@@ -136,7 +136,7 @@ bool GenerateSig()
 {
     GetProcId();
     GetProcHandle();
-    std::cout << g_procId << " - " << g_procHandle;
+    std::cout << g_procId << " - " << g_procHandle << std::endl;
 
     std::vector<byte> res;
     for (unsigned int i = 0; i < g_size; i++) {
@@ -145,9 +145,9 @@ bool GenerateSig()
     }
 
     for (int i = 0; i < res.size(); i++) {
-        std::cout << std::hex << (unsigned int)res[i] << std::endl;
+        std::cout << std::hex << dye::on_light_blue((unsigned int)res[i]) << dye::on_light_blue(" ");
     }
-
+    std::cout << std::endl << std::endl;
 }
 
 Option Parse(std::vector<std::string> cmd)
@@ -192,17 +192,17 @@ Option Parse(std::vector<std::string> cmd)
 
         // determin name or key
         std::string s;
-        s = argv[2];
-        if (!strcmp(s.substr(s.size() - 4).c_str(), ".exe"))    // name                                         // bug here
+        s = cmd[2];
+        if (s.size() > 4 && !strcmp(s.substr(s.size() - 4).c_str(), ".exe"))    // name                                         // bug here
         {
-            const char* cc = cmd[2].c_str();
-            //g_procName = (const wchar_t*)(cc);
-            std::cout << (const char*)g_procName << std::endl;
+            g_procName = s;
+            std::cout << g_procName << std::endl;
             return GenerateSigByProcessName;
         }
         else   // primary key
         {
-            g_key = (unsigned int)strtol(cmd[2].c_str(), &ptr, 10);
+            g_key = (unsigned int)strtol(s.c_str(), &ptr, 10);
+            std::cout << g_key << std::endl;
             return GenerateSigByPrimarykey;
         }
     }
@@ -255,59 +255,58 @@ int main()
     SetConsoleTitleA("HeXas Signature Maker");
     SetConsoleTextAttribute(g_hConsole, 8);
 
-
-    if (1)
-    {
-        std::string preHandle_argv;
-        std::getline(std::cin, preHandle_argv);
-        ParseArgument(preHandle_argv);
-        for (int i = 0; i < argv.size(); i++)
-        {
-            std::cout << argv[i] << std::endl;
-        }
-
-    }
     while (1)
     {
+        // get input
+        std::string preHandle_argv = "";
+        std::getline(std::cin, preHandle_argv);
+        argv = {};
+        if (!ParseArgument(preHandle_argv)) Info::printHelp();
+        else 
+        {
+            // parse option
+            Option choice = Parse(argv);
+            if (choice == ErrorChoice)
+            {
+                Info::printHelp();
+            }
+            if (choice == GetProcList)
+            {
+                g_procList = {};
+                GetProcessList();
+                SortByDictOrder();
+
+                for (int i = 0; i < g_procList.size(); i++) {
+                    std::cout << std::dec <<  i << " - " << g_procList[i] << std::endl << std::endl;
+                }
+                // TODO
+                // Change sort algorithm
+            }
+            if (choice == ReGenerateSig)
+            {
+                GenerateSig();
+            }
+            if (choice == GenerateSigByProcessName)
+            {
+                GenerateSig();
+            }
+            if (choice == GenerateSigByPrimarykey)
+            {
+                g_procList = {};
+                GetProcessList();
+                SortByDictOrder();
+
+                if (!g_procList.size()) Info::printHelp();
+
+                g_procName = g_procList[g_key];
+                GenerateSig();
+            }
+        }
+
+
         if (GetAsyncKeyState(VK_END))
         {
             return 0;
-        }
-    }
-    {
-        Option choice = Parse(argv);
-        if (choice == ErrorChoice)
-        {
-            Info::printHelp();
-            return 0;
-        }
-        if (choice == GetProcList)
-        {
-            GetProcessList();
-            SortByDictOrder();
-
-            for (int i = 0; i < g_procList.size(); i++) {
-                std::cout << g_procList[i] << std::endl;
-            }
-            // TODO
-            // Change sort algorithm
-            // write to local
-            return 0;
-        }
-        if (choice == ReGenerateSig)
-        {
-            // reed last choice info from local
-            // GetSig
-        }
-        if (choice == GenerateSigByProcessName)
-        {
-            GenerateSig();
-        }
-        if (choice == GenerateSigByPrimarykey)
-        {
-            //read process name from local list
-            // determin if exists list in local
-            // Getsig
         }
     }
 

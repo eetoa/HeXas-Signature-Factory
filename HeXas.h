@@ -11,7 +11,7 @@
 #include <conio.h>
 
 HANDLE g_hConsole;
-const char* g_procName = "CoDWaW.exe";
+std::string g_procName;
 uintptr_t g_address;
 unsigned int g_key;
 uintptr_t g_size;
