@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "color.hpp"
 
 std::unordered_map<std::string, std::vector<std::string>>	sigMap;
 std::unordered_map<std::string, std::string>				ProductMap;
@@ -56,4 +57,20 @@ std::string Merge(std::vector<std::string>)
 {
 	// TODO: merge algorithm implementaion
 
+}
+
+// hexas get group
+bool GetProduct(std::string group)
+{
+	// group not exists
+	if (!sigMap.count(group))
+	{
+		return false;
+	}
+	std::unordered_map<std::string, std::string>::iterator iter;
+	iter = ProductMap.find(group);
+	if (iter != ProductMap.end())
+	{
+		std::cout << std::hex << dye::on_purple(iter->second) << dye::on_light_blue(" ");
+	}
 }
