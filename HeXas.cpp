@@ -150,21 +150,22 @@ bool GenerateSig()
 
 }
 
-Option Parse(int argc, char* argv[])
+Option Parse(std::vector<std::string> cmd)
 {
-    if (argc != 2 && argc != 4 && argc != 7) return ErrorChoice;
+    int len = cmd.size();
+    if (len != 2 && len != 4 && len != 7) return ErrorChoice;
     //std::cout << argc << std::endl;
 
-    if (argc == 2 && !strcmp(argv[1], "-ls"))   // hexas -ls
+    if (len == 2 && !strcmp(cmd[1].c_str(), "-ls"))   // hexas -ls
     {
         return GetProcList;
     }
 
-    if (argc == 4 && !strcmp(argv[1], "-r") && !strcmp(argv[2], "-a"))  // hexas -r -a 
+    if (len == 4 && !strcmp(cmd[1].c_str(), "-r") && !strcmp(cmd[2].c_str(), "-a"))  // hexas -r -a 
     {
         long add;
         char* ptr;
-        add = strtol(argv[3], &ptr, 16);
+        add = strtol(cmd[3].c_str(), &ptr, 16);
         g_address = (uintptr_t)add;
         return ReGenerateSig;
     }
@@ -173,19 +174,19 @@ Option Parse(int argc, char* argv[])
         std::cout << i << " - " << argv[i] << std::endl;
     }
     */
-    if (argc == 7 && !strcmp(argv[1], "-p") && !strcmp(argv[3], "-a") && !strcmp(argv[5], "-s")) {   // hexas -p [name or key] -a [address] -s [size]
+    if (len == 7 && !strcmp(cmd[1].c_str(), "-p") && !strcmp(cmd[3].c_str(), "-a") && !strcmp(cmd[5].c_str(), "-s")) {   // hexas -p [name or key] -a [address] -s [size]
         //std::cout << argc << std::endl;
 
         char* ptr;
 
         // parse address
         long add;
-        add = strtol(argv[4], &ptr, 16);
+        add = strtol(cmd[4].c_str(), &ptr, 16);
         g_address = (uintptr_t)add;
         std::cout << std::hex << g_address << std::endl;
 
         // parse size
-        add = strtol(argv[6], &ptr, 16);
+        add = strtol(cmd[6].c_str(), &ptr, 16);
         g_size = (uintptr_t)add;
         std::cout << std::hex << g_size << std::endl;
 
@@ -194,21 +195,52 @@ Option Parse(int argc, char* argv[])
         s = argv[2];
         if (!strcmp(s.substr(s.size() - 4).c_str(), ".exe"))    // name                                         // bug here
         {
-            const char* cc = argv[2];
+            const char* cc = cmd[2].c_str();
             //g_procName = (const wchar_t*)(cc);
             std::cout << (const char*)g_procName << std::endl;
             return GenerateSigByProcessName;
         }
         else   // primary key
         {
-            g_key = (unsigned int)strtol(argv[2], &ptr, 10);
+            g_key = (unsigned int)strtol(cmd[2].c_str(), &ptr, 10);
             return GenerateSigByPrimarykey;
         }
     }
     return ErrorChoice;
 }
 
-int main(int argc, char* argv[])
+std::string trim(std::string s)
+{
+    int i = 0, j = s.size() - 1;
+    for (; s[i] == ' ' && i <= j;) i++;
+    for (; s[j] == ' ' && i <= j;) j--;
+    std::string res = "";
+    for (; i <= j; i++)
+    {
+        res += s[i];
+    }
+    return res;
+}
+
+bool ParseArgument(std::string preHandle_argv)
+{
+
+    std::string s = trim(preHandle_argv);
+    if (!s.length()) return false;
+    for (int i = 0, j = s.size() - 1; i <= j;) 
+    {
+        std::string t = "";
+        for (; i <= j && s[i] != ' '; i++)
+        {
+            t += s[i];
+        }
+        argv.push_back(t);
+        for (; i <= j && s[i] == ' '; i++);
+    } 
+    return true;
+}
+
+int main()
 {
     // allocate console
     BOOL f = AllocConsole();
@@ -223,10 +255,27 @@ int main(int argc, char* argv[])
     SetConsoleTitleA("HeXas Signature Maker");
     SetConsoleTextAttribute(g_hConsole, 8);
 
-    //GenerateSig();
 
+    if (1)
     {
-        Option choice = Parse(argc, argv);
+        std::string preHandle_argv;
+        std::getline(std::cin, preHandle_argv);
+        ParseArgument(preHandle_argv);
+        for (int i = 0; i < argv.size(); i++)
+        {
+            std::cout << argv[i] << std::endl;
+        }
+
+    }
+    while (1)
+    {
+        if (GetAsyncKeyState(VK_END))
+        {
+            return 0;
+        }
+    }
+    {
+        Option choice = Parse(argv);
         if (choice == ErrorChoice)
         {
             Info::printHelp();

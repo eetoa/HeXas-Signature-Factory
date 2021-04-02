@@ -17,7 +17,7 @@ unsigned int g_key;
 uintptr_t g_size;
 HANDLE	g_procHandle;
 DWORD	g_procId;
-
+std::vector<std::string> argv;
 std::vector<std::string> g_procList;
 
 enum Option
