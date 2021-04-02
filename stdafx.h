@@ -14,4 +14,6 @@
 
 // project
 #include "HeXas.h"
+#include "Proc.h"
+#include "Utils.h"
 #include "SignatureFactory.h"
