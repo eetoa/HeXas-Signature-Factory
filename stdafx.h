@@ -10,6 +10,8 @@
 #include <string>
 #include <algorithm>
 #include <conio.h>
+#include <unordered_map>
 
 // project
 #include "HeXas.h"
+#include "SignatureFactory.h"
