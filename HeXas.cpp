@@ -1,5 +1,15 @@
-#include "HeXas.h"
+#include "stdafx.h"
+#include "color.hpp"
 
+HANDLE g_hConsole;
+std::string g_procName;
+uintptr_t g_address;
+unsigned int g_key;
+uintptr_t g_size;
+HANDLE	g_procHandle;
+DWORD	g_procId;
+std::vector<std::string> argv;
+std::vector<std::string> g_procList;
 
 namespace Info {
 
@@ -257,6 +267,7 @@ int main()
 
     while (1)
     {
+        SetConsoleTextAttribute(g_hConsole, 8);
         // get input
         std::string preHandle_argv = "";
         std::getline(std::cin, preHandle_argv);
@@ -277,8 +288,9 @@ int main()
                 SortByDictOrder();
 
                 for (int i = 0; i < g_procList.size(); i++) {
-                    std::cout << std::dec <<  i << " - " << g_procList[i] << std::endl << std::endl;
+                    std::cout << std::dec <<  i << " - " << g_procList[i] << std::endl;
                 }
+                std::cout << std::endl;
                 // TODO
                 // Change sort algorithm
             }

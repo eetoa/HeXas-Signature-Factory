@@ -1,24 +1,13 @@
-#pragma once
-#include <iostream>
-#include <Windows.h>
-#include <TlHelp32.h>
-#include <vector>
-#include <psapi.h>
-#include <tchar.h>
-#include <string>
-#include <algorithm>
-#include "color.hpp"
-#include <conio.h>
 
-HANDLE g_hConsole;
-std::string g_procName;
-uintptr_t g_address;
-unsigned int g_key;
-uintptr_t g_size;
-HANDLE	g_procHandle;
-DWORD	g_procId;
-std::vector<std::string> argv;
-std::vector<std::string> g_procList;
+extern HANDLE g_hConsole;
+extern std::string g_procName;
+extern uintptr_t g_address;
+extern unsigned int g_key;
+extern uintptr_t g_size;
+extern HANDLE	g_procHandle;
+extern DWORD	g_procId;
+extern std::vector<std::string> argv;
+extern std::vector<std::string> g_procList;
 
 enum Option
 {
