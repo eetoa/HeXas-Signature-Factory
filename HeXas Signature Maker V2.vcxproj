@@ -142,10 +142,12 @@
   <ItemGroup>
     <ClInclude Include="color.hpp" />
     <ClInclude Include="HeXas.h" />
+    <ClInclude Include="SignatureFactory.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HeXas.cpp" />
+    <ClCompile Include="SignatureFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>

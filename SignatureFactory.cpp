@@ -1,8 +1,7 @@
 #include "stdafx.h"
-#include "color.hpp"
 
-std::unordered_map<std::string, std::vector<std::string>>	sigMap;
-std::unordered_map<std::string, std::string>				ProductMap;
+std::unordered_map<std::string, std::vector<std::string>>	Factory::sigMap;
+std::unordered_map<std::string, std::string>				Factory::ProductMap;
 
 
 // hexas new group
@@ -48,19 +47,19 @@ bool Factory::MergeSigs(std::string group)
 	iter = sigMap.find(group);
 	if (iter != sigMap.end())
 	{
-		ProductMap.insert(group, Merge(iter->second));
+		ProductMap.insert({ group, Merge(iter->second) });
 	}
 	return true;
 }
 
-std::string Merge(std::vector<std::string>)
+std::string Factory::Merge(std::vector<std::string>)
 {
 	// TODO: merge algorithm implementaion
 
 }
 
 // hexas get group
-bool GetProduct(std::string group)
+bool Factory::GetProduct(std::string group)
 {
 	// group not exists
 	if (!sigMap.count(group))
@@ -71,6 +70,6 @@ bool GetProduct(std::string group)
 	iter = ProductMap.find(group);
 	if (iter != ProductMap.end())
 	{
-		std::cout << std::hex << dye::on_purple(iter->second) << dye::on_light_blue(" ");
+		std::cout << std::hex << iter->second << " ";
 	}
 }
