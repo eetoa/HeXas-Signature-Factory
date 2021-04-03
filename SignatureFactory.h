@@ -7,7 +7,7 @@ enum  Status
 	GroupNotFoundError = 1,
 	NoneGroup = 2,
 	GroupExistsError = 3,
-
+	SigNotFoundError = 4,
 };
 
 class Factory

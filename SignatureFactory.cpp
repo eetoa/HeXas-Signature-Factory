@@ -115,8 +115,7 @@ Status Factory::GenerateSig(std::string group)
 {
 	Proc::GetProcId();
 	Proc::GetProcHandle();
-	std::cout << g_procId << " - " << g_procHandle << std::endl;
-
+	
 	std::vector<byte> res;
 	for (unsigned int i = 0; i < g_size; i++) {
 		byte cur;
@@ -175,15 +174,62 @@ Status Factory::MergeGroup(std::string group)
 	iter = sigMap.find(group);
 	if (iter != sigMap.end())
 	{
-		productMap.insert({ group, Merge(iter->second) });
+		if (!iter->second.size())
+			return SigNotFoundError;
+		// if product exists, and wanna remerge ,just overwrite with new merge
+		productMap[group] = Merge(iter->second);
+		/*
+		// determin if remerge product
+		if (productMap.count(group))
+		{
+			//exists product
+			iter->second.push_back(productMap[group]);
+			productMap.insert({ group, Merge(iter->second) });
+			iter->second.pop_back();
+		}
+		else
+		{
+			productMap.insert({ group, Merge(iter->second) });
+		}
+		*/
 	}
 	return Success;
 }
 
 std::string Factory::Merge(std::vector<std::string> sigs)
 {
-	// TODO: merge algorithm implementaion
-	return "";
+	// at this point , sigs container has at least one item
+	std::string res = "";
+	int rows = sigs.size();
+	if (rows == 1)
+		return sigs[0];
+
+	int min = 1e6 + 10;
+	for (int r = 0; r < rows; r++)
+	{
+		min = sigs[r].length() < min ? sigs[r].length() : min;
+	}
+
+	for (int c = 0; c < min; c++)
+	{
+		char cmp = sigs[0][c];
+		bool isMatch = false;
+		for (int r = 1; r < rows; r++)
+		{
+			if (sigs[r][c] != cmp)
+			{
+				isMatch = false;
+				break;
+			}
+			else
+			{
+				isMatch = true;
+			}
+
+		}
+		res += isMatch ? cmp : '?';
+	}
+	return res;
 }
 
 // get group
@@ -198,7 +244,9 @@ Status Factory::GetProduct(std::string group)
 	iter = productMap.find(group);
 	if (iter != productMap.end())
 	{
-		std::cout << std::hex << iter->second << " ";
+		std::cout << dye::on_light_purple(iter->second);
 	}
+	std::cout << std::endl << std::endl;
+
 	return Success;
 }

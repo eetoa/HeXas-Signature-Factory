@@ -75,12 +75,10 @@ Option Parse(std::vector<std::string> cmd)
         long add;
         add = strtol(cmd[4].c_str(), &ptr, 16);
         g_address = (uintptr_t)add;
-        std::cout << std::hex << g_address << std::endl;
 
         // parse size
         add = strtol(cmd[6].c_str(), &ptr, 16);
         g_size = (uintptr_t)add;
-        std::cout << std::hex << g_size << std::endl;
 
         // determin name or key
         std::string s;
@@ -94,7 +92,6 @@ Option Parse(std::vector<std::string> cmd)
         else   // primary key
         {
             g_key = (unsigned int)strtol(s.c_str(), &ptr, 10);
-            std::cout << g_key << std::endl;
             return GenerateSigByPrimarykey;
         }
     }
@@ -238,3 +235,6 @@ int main()
 
     return 0;
 }
+// TODO 
+// + Delete group
+// + Info system
