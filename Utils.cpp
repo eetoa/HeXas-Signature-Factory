@@ -32,10 +32,17 @@ const wchar_t* Utils::CharToWchar(const char* ch)
     return wch;
 }
 
-
 bool cmp(std::string s1, std::string s2)
 {
-    return strcmp(s1.c_str(), s2.c_str()) < 0;
+	transform(s1.begin(), s1.end(), s1.begin(), ::tolower);
+	transform(s2.begin(), s2.end(), s2.begin(), ::tolower);
+	int mi = min(s1.size(), s2.size());
+	for (int i = 0; i < mi; i++)
+	{
+		if (s1[i] < s2[i]) return true;
+		else if (s1[i] > s2[i]) return false;
+	}
+	return s1.length() <= s2.length();
 }
 
 void Utils::SortByDictOrder()

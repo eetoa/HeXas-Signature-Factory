@@ -117,6 +117,24 @@ bool Proc::ProcessWalker()
     }
     else
     {
+        for (int i = 1; i <= pCount; i++)
+        {
+            g_procList.push_back(Utils::LPWSTR_To_String(procInfo->pProcessName));
+            procInfo++;
+        }
+
+        Utils::SortByDictOrder();
+
+        using namespace std;
+        cout << endl;
+        cout << setw(8) << right << "Key" << "        " << setw(30) << left << "Process Name" << endl;
+
+        for (int i = 0; i < g_procList.size(); i++)
+        {
+            cout << setw(8) << right << i + 1 << "        " << setw(30) << left <<  g_procList[i] << endl;
+        }
+        return true;
+        /*
         using namespace std;
         cout << endl;
         cout << setw(8) << right << "Key" << "        " << setw(30) << left << "Process Name" << endl;
@@ -127,5 +145,6 @@ bool Proc::ProcessWalker()
             procInfo++;
         }
         return true;
+        */
     }
 }
