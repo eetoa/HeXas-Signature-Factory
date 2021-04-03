@@ -1,7 +1,39 @@
 #include "stdafx.h"
+#include "color.hpp"
 
 std::unordered_map<std::string, std::vector<std::string>>	Factory::sigMap;
 std::unordered_map<std::string, std::string>				Factory::ProductMap;
+
+
+bool Factory::GenerateSig(std::string group)
+{
+	Proc::GetProcId();
+	Proc::GetProcHandle();
+	std::cout << g_procId << " - " << g_procHandle << std::endl;
+
+	std::vector<byte> res;
+	for (unsigned int i = 0; i < g_size; i++) {
+		byte cur;
+		res.push_back(ReadEx<byte>(g_address + i));
+	}
+	/*
+	for (int i = 0; i < res.size(); i++) {
+		std::cout << std::hex << dye::on_light_blue((unsigned int)res[i]) << dye::on_light_blue(" ");
+	}
+	std::cout << std::endl << std::endl;
+	*/
+	std::string sig = "";
+	for (int i = 0; i < res.size(); i++) {
+		std::string unit = Utils::ToHexString((unsigned int)res[i]);;
+		if (unit.length() == 1) unit = "0" + unit;
+		sig += unit;
+		sig += " ";
+	}
+	std::cout << dye::on_light_blue(sig);
+	std::cout << std::endl << std::endl;
+
+	//UpdateSigMap(group, sig);
+}
 
 
 // hexas new group
@@ -55,7 +87,7 @@ bool Factory::MergeSigs(std::string group)
 std::string Factory::Merge(std::vector<std::string>)
 {
 	// TODO: merge algorithm implementaion
-
+	return "";
 }
 
 // hexas get group

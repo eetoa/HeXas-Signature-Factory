@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "color.hpp"
 
 HANDLE g_hConsole;
 std::string g_procName;
@@ -11,48 +10,34 @@ DWORD	g_procId;
 std::vector<std::string> argv;
 std::vector<std::string> g_procList;
 
-namespace Info {
 
-    using namespace std;
-    inline void printHelp()
-    {
-        cout << "Help Information" << endl << endl;
-    }
-}
-
-
-
-
-bool GenerateSig()
-{
-    Proc::GetProcId();
-    Proc::GetProcHandle();
-    std::cout << g_procId << " - " << g_procHandle << std::endl;
-
-    std::vector<byte> res;
-    for (unsigned int i = 0; i < g_size; i++) {
-        byte cur;
-        res.push_back(ReadEx<byte>(g_address + i));
-    }
-
-    for (int i = 0; i < res.size(); i++) {
-        std::cout << std::hex << dye::on_light_blue((unsigned int)res[i]) << dye::on_light_blue(" ");
-    }
-    std::cout << std::endl << std::endl;
-}
 
 Option Parse(std::vector<std::string> cmd)
 {
     int len = cmd.size();
-    if (len != 2 && len != 4 && len != 7) return ErrorChoice;
-    //std::cout << argc << std::endl;
+    if (len != 1 && len != 2 && len != 4 && len != 7) return ErrorOption;
 
-    if (len == 2 && !strcmp(cmd[1].c_str(), "-ls"))   // hexas -ls
+    if (len == 1 && !strcmp(cmd[0].c_str(), "ls"))                                          // ls
     {
         return GetProcList;
     }
 
-    if (len == 4 && !strcmp(cmd[1].c_str(), "-r") && !strcmp(cmd[2].c_str(), "-a"))  // hexas -r -a 
+    if (len == 2 && !strcmp(cmd[0].c_str(), "new"))                                         // new group
+    {
+        Factory::AddGroup(cmd[1]);
+        return NewGroup;
+    }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "merge"))                                       // merge group
+    {
+        Factory::MergeSigs(cmd[1]);
+        return MergeGroup;
+    }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "get"))                                         // get final sig from group
+    {
+        Factory::GetProduct(cmd[1]);
+        return GetGroup;
+    }
+    if (len == 4 && !strcmp(cmd[1].c_str(), "-r") && !strcmp(cmd[2].c_str(), "-a"))         // repeat get sig with last info
     {
         long add;
         char* ptr;
@@ -97,7 +82,7 @@ Option Parse(std::vector<std::string> cmd)
             return GenerateSigByPrimarykey;
         }
     }
-    return ErrorChoice;
+    return ErrorOption;
 }
 
 std::string trim(std::string s)
@@ -158,7 +143,7 @@ int main()
         {
             // parse option
             Option choice = Parse(argv);
-            if (choice == ErrorChoice)
+            if (choice == ErrorOption)
             {
                 Info::printHelp();
             }
@@ -177,11 +162,11 @@ int main()
             }
             if (choice == ReGenerateSig)
             {
-                GenerateSig();
+                Factory::GenerateSig(argv[0]);
             }
             if (choice == GenerateSigByProcessName)
             {
-                GenerateSig();
+                Factory::GenerateSig(argv[0]);
             }
             if (choice == GenerateSigByPrimarykey)
             {
@@ -192,7 +177,7 @@ int main()
                 if (!g_procList.size()) Info::printHelp();
 
                 g_procName = g_procList[g_key];
-                GenerateSig();
+                Factory::GenerateSig(argv[0]);
             }
         }
 

@@ -15,6 +15,7 @@ public:
 	static std::unordered_map<std::string, std::string>  ProductMap;
 
 public:
+	static bool GenerateSig(std::string);								
 	static bool AddGroup(std::string group);							// hexas new group
 	static bool UpdateSigMap(std::string group, std::string sig);		// hexas groupName -p cod.exe -a 0x1708E3 -s 0x8
 	static bool MergeSigs(std::string group);							// hexas merge group

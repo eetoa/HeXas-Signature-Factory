@@ -9,13 +9,25 @@ extern DWORD	g_procId;
 extern std::vector<std::string> argv;
 extern std::vector<std::string> g_procList;
 
+namespace Info {
+
+	using namespace std;
+	inline void printHelp()
+	{
+		cout << "Help Information" << endl << endl;
+	}
+}
+
 enum Option
 {
 	GetProcList = 1,
-	ReGenerateSig = 2,
-	GenerateSigByProcessName = 3,
-	GenerateSigByPrimarykey = 4,
-	ErrorChoice = -1,
+	NewGroup = 2,
+	MergeGroup = 3,
+	GetGroup = 4,
+	ReGenerateSig = 5,
+	GenerateSigByProcessName = 6,
+	GenerateSigByPrimarykey = 7,
+	ErrorOption = -1,
 };
 
 template <typename T>
