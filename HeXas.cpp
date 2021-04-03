@@ -163,6 +163,7 @@ int main()
             }
             if (choice == ListProgress)
             {
+                /*
                 g_procList = {};
                 Proc::GetProcessList();
                 Utils::SortByDictOrder();
@@ -171,6 +172,8 @@ int main()
                     std::cout << std::dec <<  i << " - " << g_procList[i] << std::endl;
                 }
                 std::cout << std::endl;
+                */
+                Proc::ProcessWalker();
                 // TODO
                 // Change sort algorithm
             }

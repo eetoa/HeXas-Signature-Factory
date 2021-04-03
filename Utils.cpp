@@ -42,3 +42,9 @@ void Utils::SortByDictOrder()
 {
     std::sort(g_procList.begin(), g_procList.end(), cmp);
 }
+
+std::string Utils::LPWSTR_To_String(LPWSTR lpwstr)
+{
+	std::wstring ws(lpwstr);
+	return std::string(ws.begin(), ws.end());
+}

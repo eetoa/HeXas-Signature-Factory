@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+PWTS_PROCESS_INFO Proc::procInfo = NULL;
+DWORD             Proc::pCount;			
+
 void Proc::GetProcessName(DWORD processID)
 {
     TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
@@ -101,4 +104,28 @@ void Proc::GetProcId()
     }
     CloseHandle(hSnap);
     g_procId = procId;
+}
+
+bool Proc::ProcessWalker()
+{
+    DWORD pLevel = 0; 
+    
+    // finding process of WTS_CURRENT_SERVER_HANDLE and of WTS_ANY_SESSION
+    if (!WTSEnumerateProcessesExW(WTS_CURRENT_SERVER_HANDLE, &pLevel, WTS_ANY_SESSION, (LPWSTR*)&procInfo, &pCount))
+    {
+        return false;
+    }
+    else
+    {
+        using namespace std;
+        cout << endl;
+        cout << setw(8) << right << "Key" << "        " << setw(30) << left << "Process Name" << endl;
+
+        for (int i = 1; i <= pCount; i++)
+        {
+            cout << setw(8) << right << to_string(i) << "        " << setw(30) << left << Utils::LPWSTR_To_String(procInfo->pProcessName) << endl;
+            procInfo++;
+        }
+        return true;
+    }
 }
