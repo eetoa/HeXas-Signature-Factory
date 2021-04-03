@@ -219,6 +219,28 @@ std::string Factory::Merge(std::vector<std::string> sigs)
 		}
 		res += isMatch ? cmp : '?';
 	}
+	// handle the single '?' issue
+	for (int i = 0, j = 0, cnt = 0; i < res.length(); i++)
+	{
+		char c = res[i];
+		if (c == '?') cnt++;
+		if (c == ' ')
+		{
+			if (cnt & 1)
+			{
+				for (; j < i; j++)
+				{
+					res[j] = '?';
+				}
+			}
+			else
+			{
+				j = i;
+			}
+			j++;
+			cnt = 0;
+		}
+	}
 	return res;
 }
 
