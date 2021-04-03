@@ -19,9 +19,12 @@ Option Parse(std::vector<std::string> cmd)
 
     if (len == 2 && !strcmp(cmd[0].c_str(), "ls") && !strcmp(cmd[1].c_str(), "-p"))         // ls progresses
     {
-        return GetProcList;
+        return ListProgress;
     }
-
+    if (len == 2 && !strcmp(cmd[0].c_str(), "ls") && !strcmp(cmd[1].c_str(), "-g"))         // ls groups
+    {
+        return ListGroup;
+    }
     if (len == 2 && !strcmp(cmd[0].c_str(), "new"))                                         // new group
     {
         Factory::AddGroup(cmd[1]);
@@ -41,6 +44,18 @@ Option Parse(std::vector<std::string> cmd)
     {
         Factory::GetProduct(cmd[1]);
         return GetGroup;
+    }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "show") && !strcmp(cmd[1].c_str(), "-all"))
+    {
+        return ShowAllGroup;
+    }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "merge") && !strcmp(cmd[1].c_str(), "-all"))
+    {
+        return MergeAllGroup;
+    }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "get") && !strcmp(cmd[1].c_str(), "-all"))
+    {
+        return GetAllGroup;
     }
     if (len == 4 && !strcmp(cmd[1].c_str(), "-r") && !strcmp(cmd[2].c_str(), "-a"))         // repeat get sig with last info
     {
@@ -152,7 +167,7 @@ int main()
             {
                 Info::printHelp();
             }
-            if (choice == GetProcList)
+            if (choice == ListProgress)
             {
                 g_procList = {};
                 Proc::GetProcessList();
@@ -164,6 +179,10 @@ int main()
                 std::cout << std::endl;
                 // TODO
                 // Change sort algorithm
+            }
+            if (choice == ListGroup)
+            {
+                Factory::ListGroup();
             }
             if (choice == ReGenerateSig)
             {

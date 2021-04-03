@@ -5,7 +5,21 @@ std::unordered_map<std::string, std::vector<std::string>>	Factory::sigMap;
 std::unordered_map<std::string, std::string>				Factory::ProductMap;
 
 
-
+// ls -g
+void Factory::ListGroup()
+{
+	if (sigMap.empty())
+	{
+		std::cout << "No Group Exist." << std::endl << std::endl;
+		return;
+	}
+	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
+	for (iter = sigMap.begin(); iter != sigMap.end(); iter++)
+	{
+		std::cout << dye::on_light_aqua(iter->first) << std::endl;
+	}
+	std::cout << std::endl;
+}
 
 
 // new group

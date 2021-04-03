@@ -15,6 +15,7 @@ public:
 	static std::unordered_map<std::string, std::string>  ProductMap;
 
 public:
+	static void ListGroup();							// ls -g
 	static bool AddGroup(std::string group);							// new group
 	static bool ShowGroup(std::string group);							// show group
 	static bool GenerateSig(std::string);

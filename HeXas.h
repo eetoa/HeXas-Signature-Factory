@@ -20,14 +20,18 @@ namespace Info {
 
 enum Option
 {
-	GetProcList = 1,
+	ListProgress = 1,
+	ListGroup = 2,
 	NewGroup = 2,
 	ShowGroup = 3,
 	MergeGroup = 4,
 	GetGroup = 5,
-	ReGenerateSig = 6,
-	GenerateSigByProcessName = 7,
-	GenerateSigByPrimarykey = 8,
+	ShowAllGroup = 6,
+	MergeAllGroup = 7,
+	GetAllGroup = 8,
+	ReGenerateSig = 9,
+	GenerateSigByProcessName = 10,
+	GenerateSigByPrimarykey = 11,
 	ErrorOption = -1,
 };
 
