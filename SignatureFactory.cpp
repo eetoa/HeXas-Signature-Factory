@@ -13,11 +13,14 @@ Status Factory::ListGroup()
 		//std::cout << "No Group Exist." << std::endl << std::endl;
 		return NoneGroup;
 	}
+	int i = 0;
 	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
 	for (iter = sigMap.begin(); iter != sigMap.end(); iter++)
 	{
 		std::cout << dye::on_light_aqua(iter->first) << std::endl;
+		i++;
 	}
+	std::cout << i << " in total";
 	std::cout << std::endl;
 	return Success;
 }

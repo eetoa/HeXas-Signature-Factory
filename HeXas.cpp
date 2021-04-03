@@ -25,6 +25,18 @@ Option Parse(std::vector<std::string> cmd)
     {
         return ListGroup;
     }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "show") && !strcmp(cmd[1].c_str(), "-all"))     // show -all
+    {
+        return ShowAllGroup;
+    }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "merge") && !strcmp(cmd[1].c_str(), "-all"))    // merge -all
+    {
+        return MergeAllGroup;
+    }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "get") && !strcmp(cmd[1].c_str(), "-all"))      // get -all
+    {
+        return GetAllGroup;
+    }
     if (len == 2 && !strcmp(cmd[0].c_str(), "new"))                                         // new group
     {
         return NewGroup;
@@ -40,18 +52,6 @@ Option Parse(std::vector<std::string> cmd)
     if (len == 2 && !strcmp(cmd[0].c_str(), "get"))                                         // get final sig from group
     {
         return GetGroup;
-    }
-    if (len == 2 && !strcmp(cmd[0].c_str(), "show") && !strcmp(cmd[1].c_str(), "-all"))
-    {
-        return ShowAllGroup;
-    }
-    if (len == 2 && !strcmp(cmd[0].c_str(), "merge") && !strcmp(cmd[1].c_str(), "-all"))
-    {
-        return MergeAllGroup;
-    }
-    if (len == 2 && !strcmp(cmd[0].c_str(), "get") && !strcmp(cmd[1].c_str(), "-all"))
-    {
-        return GetAllGroup;
     }
     if (len == 4 && !strcmp(cmd[1].c_str(), "-r") && !strcmp(cmd[2].c_str(), "-a"))         // repeat get sig with last info
     {
