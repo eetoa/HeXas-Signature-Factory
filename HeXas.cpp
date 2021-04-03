@@ -142,6 +142,8 @@ int main()
     SetConsoleTitleA("HeXas Signature Factory");
     SetConsoleTextAttribute(g_hConsole, 8);
 
+    DrawHeader();
+
     while (1)
     {
         SetConsoleTextAttribute(g_hConsole, 8);
@@ -265,4 +267,4 @@ int main()
 }
 // TODO 
 // + Delete group
-// + Info system
+// + sort progresses
