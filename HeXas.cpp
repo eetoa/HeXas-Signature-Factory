@@ -169,7 +169,7 @@ int main()
 
                 for (int i = 0; i < g_procList.size(); i++)
                 {
-                    cout << setw(8) << right << i + 1 << "        " << setw(30) << left << g_procList[i] << endl;
+                    cout << setw(8) << right << i << "        " << setw(30) << left << g_procList[i] << endl;
                 }
             }
             if (choice == ListGroup)
@@ -230,9 +230,6 @@ int main()
             }
             if (choice == GenerateSigByPrimarykey)
             {
-                g_procList = {};
-                Proc::ProcessWalker();
-
                 if (!g_procList.size())
                     Info::Help();
 

@@ -46,7 +46,7 @@ bool Proc::ProcessWalker()
     }
     else
     {
-        for (int i = 1; i <= pCount; i++)
+        for (int i = 0; i < pCount; i++)
         {
             g_procList.push_back(Utils::LPWSTR_To_String(procInfo->pProcessName));
             procInfo++;
