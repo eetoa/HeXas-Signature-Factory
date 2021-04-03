@@ -27,22 +27,18 @@ Option Parse(std::vector<std::string> cmd)
     }
     if (len == 2 && !strcmp(cmd[0].c_str(), "new"))                                         // new group
     {
-        Factory::AddGroup(cmd[1]);
         return NewGroup;
     }
     if (len == 2 && !strcmp(cmd[0].c_str(), "show"))                                        // show group
     {
-        Factory::ShowGroup(cmd[1]);
         return ShowGroup;
     }
     if (len == 2 && !strcmp(cmd[0].c_str(), "merge"))                                       // merge group
     {
-        Factory::MergeSigs(cmd[1]);
         return MergeGroup;
     }
     if (len == 2 && !strcmp(cmd[0].c_str(), "get"))                                         // get final sig from group
     {
-        Factory::GetProduct(cmd[1]);
         return GetGroup;
     }
     if (len == 2 && !strcmp(cmd[0].c_str(), "show") && !strcmp(cmd[1].c_str(), "-all"))
@@ -183,6 +179,34 @@ int main()
             if (choice == ListGroup)
             {
                 Factory::ListGroup();
+            }
+            if (choice == NewGroup)
+            {
+                Factory::AddGroup(argv[1]);
+            }
+            if (choice == ShowGroup)
+            {
+                Factory::ShowGroup(argv[1]);
+            }
+            if (choice == MergeGroup)
+            {
+                Factory::MergeGroup(argv[1]);
+            }
+            if (choice == GetGroup)
+            {
+                Factory::GetProduct(argv[1]);
+            }
+            if (choice == ShowAllGroup)
+            {
+                Factory::ShowAllGroup();
+            }
+            if (choice == MergeAllGroup)
+            {
+                Factory::MergeAllGroup();
+            }
+            if (choice == GetAllGroup)
+            {
+                Factory::GetAllProduct();
             }
             if (choice == ReGenerateSig)
             {
