@@ -54,14 +54,6 @@ bool Proc::ProcessWalker()
 
         Utils::SortByDictOrder();
 
-        using namespace std;
-        cout << endl;
-        cout << setw(8) << right << "Key" << "        " << setw(30) << left << "Process Name" << endl;
-
-        for (int i = 0; i < g_procList.size(); i++)
-        {
-            cout << setw(8) << right << i + 1 << "        " << setw(30) << left <<  g_procList[i] << endl;
-        }
         return true;
     }
 }

@@ -10,10 +10,8 @@ std::unordered_map<std::string, std::string>				Factory::productMap;
 Status Factory::ListGroup()
 {
 	if (sigMap.empty())
-	{
-		//std::cout << "No Group Exist." << std::endl << std::endl;
 		return NoneGroup;
-	}
+
 	int i = 0;
 	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
 	for (iter = sigMap.begin(); iter != sigMap.end(); iter++)
@@ -29,18 +27,15 @@ Status Factory::ListGroup()
 Status Factory::ShowAllGroup()
 {
 	if (sigMap.empty())
-	{
-		//std::cout << "No Group Exist." << std::endl << std::endl
 		return NoneGroup;
-	}
+
 	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
 	for (iter = sigMap.begin(); iter != sigMap.end(); iter++)
 	{
 		std::cout << dye::black_on_light_blue(iter->first + ":")  << std::endl;
 		for (int i = 0; i < iter->second.size(); i++)
-		{
 			std::cout << dye::on_light_blue(iter->second[i]) << std::endl;
-		}
+
 	}
 	std::cout << std::endl;
 	return Success;
@@ -50,15 +45,13 @@ Status Factory::ShowAllGroup()
 Status Factory::MergeAllGroup()
 {
 	if (sigMap.empty())
-	{
 		return NoneGroup;
-	}
+
 	int cnt = 0;
 	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
 	for (iter = sigMap.begin(); iter != sigMap.end(); iter++)
-	{
 		if (MergeGroup(iter->first) == SigNotFoundError) cnt++;
-	}
+
 	if (cnt) return SigNotFoundError;
 	return Success;
 }
@@ -67,9 +60,8 @@ Status Factory::MergeAllGroup()
 Status Factory::GetAllProduct()
 {
 	if (productMap.empty())
-	{
 		return NoneGroup;
-	}
+
 	std::unordered_map<std::string, std::string>::iterator iter;
 	for (iter = productMap.begin(); iter != productMap.end(); iter++)
 	{
@@ -85,9 +77,8 @@ Status Factory::AddGroup(std::string group)
 {
 	// group exists
 	if (sigMap.count(group))
-	{
 		return GroupExistsError;
-	}
+
 	std::vector<std::string> sigContainer;
 	sigMap.insert({ group, sigContainer });
 	return Success;
@@ -103,9 +94,8 @@ Status Factory::ShowGroup(std::string group)
 		// found it
 		std::cout << dye::black_on_light_blue(group + ":") << std::endl;
 		for (int i = 0; i < iter->second.size(); i++)
-		{
 			std::cout << dye::on_light_blue(iter->second[i]) << std::endl;
-		}
+
 		std::cout << std::endl;
 		return Success;
 	}
@@ -119,11 +109,12 @@ Status Factory::GenerateSig(std::string group)
 {
 	// group not exists
 	if (!sigMap.count(group))
-	{
 		return GroupNotFoundError;
-	}
+
 	Proc::GetProcId();
-	if (!g_procId) return OpenProcessError;
+	if (!g_procId) 
+		return OpenProcessError;
+	
 	Proc::GetProcHandle();
 	
 	std::vector<byte> res;
@@ -142,9 +133,8 @@ Status Factory::GenerateSig(std::string group)
 	std::cout << std::endl << std::endl;
 
 	if (!UpdateSigMap(group, sig))
-	{
 		return GroupNotFoundError;
-	}
+
 	return Success;
 }
 
@@ -153,9 +143,8 @@ bool Factory::UpdateSigMap(std::string group, std::string sig)
 {
 	// group not exists
 	if (!sigMap.count(group))
-	{
 		return false;
-	}
+
 	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
 	iter = sigMap.find(group);
 	if (iter != sigMap.end())
@@ -171,9 +160,8 @@ Status Factory::MergeGroup(std::string group)
 {
 	// group not exists
 	if (!sigMap.count(group))
-	{
 		return GroupNotFoundError;
-	}
+
 	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
 	iter = sigMap.find(group);
 	if (iter != sigMap.end())
@@ -196,9 +184,7 @@ std::string Factory::Merge(std::vector<std::string> sigs)
 
 	int min = 1e6 + 10;
 	for (int r = 0; r < rows; r++)
-	{
 		min = sigs[r].length() < min ? sigs[r].length() : min;
-	}
 
 	for (int c = 0; c < min; c++)
 	{
@@ -226,17 +212,10 @@ std::string Factory::Merge(std::vector<std::string> sigs)
 		if (c == '?') cnt++;
 		if (c == ' ')
 		{
-			if (cnt & 1)
-			{
-				for (; j < i; j++)
-				{
-					res[j] = '?';
-				}
-			}
+			if (cnt & 1) 
+				for (; j < i; j++) res[j] = '?';
 			else
-			{
 				j = i;
-			}
 			j++;
 			cnt = 0;
 		}
@@ -249,16 +228,14 @@ Status Factory::GetProduct(std::string group)
 {
 	// group not exists
 	if (!productMap.count(group))
-	{
 		return GroupNotFoundError;
-	}
+
 	std::unordered_map<std::string, std::string>::iterator iter;
 	iter = productMap.find(group);
 	std::cout << dye::black_on_light_blue(group) << std::endl;
 	if (iter != productMap.end())
-	{
 		std::cout << dye::on_light_blue(iter->second);
-	}
+
 	std::cout << std::endl << std::endl;
 
 	return Success;

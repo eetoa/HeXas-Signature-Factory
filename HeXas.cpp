@@ -103,9 +103,8 @@ std::string trim(std::string s)
     for (; s[j] == ' ' && i <= j;) j--;
     std::string res = "";
     for (; i <= j; i++)
-    {
         res += s[i];
-    }
+
     return res;
 }
 
@@ -118,9 +117,8 @@ bool ParseArgument(std::string preHandle_argv)
     {
         std::string t = "";
         for (; i <= j && s[i] != ' '; i++)
-        {
             t += s[i];
-        }
+
         argv.push_back(t);
         for (; i <= j && s[i] == ' '; i++);
     } 
@@ -164,6 +162,15 @@ int main()
             if (choice == ListProgress)
             {
                 Proc::ProcessWalker();
+
+                using namespace std;
+                cout << endl;
+                cout << setw(8) << right << "Key" << "        " << setw(30) << left << "Process Name" << endl;
+
+                for (int i = 0; i < g_procList.size(); i++)
+                {
+                    cout << setw(8) << right << i + 1 << "        " << setw(30) << left << g_procList[i] << endl;
+                }
             }
             if (choice == ListGroup)
             {
@@ -209,51 +216,39 @@ int main()
             {
                 Status s = Factory::GenerateSig(argv[0]);
                 if (s == GroupNotFoundError)
-                { 
                     Info::GroupNotFound();
-                }
-                else if (s == OpenProcessError){
+                else if (s == OpenProcessError)
                     Info::OpenProcessError();
-                }
             }
             if (choice == GenerateSigByProcessName)
             {
                 Status s = Factory::GenerateSig(argv[0]);
                 if (s == GroupNotFoundError)
-                {
                     Info::GroupNotFound();
-                }
-                else if (s == OpenProcessError) {
+                else if (s == OpenProcessError)
                     Info::OpenProcessError();
-                }
             }
             if (choice == GenerateSigByPrimarykey)
             {
                 g_procList = {};
-                Proc::GetProcessList();
-                Utils::SortByDictOrder();
+                Proc::ProcessWalker();
 
-                if (!g_procList.size()) Info::Help();
+                if (!g_procList.size())
+                    Info::Help();
 
                 g_procName = g_procList[g_key];
 
                 Status s = Factory::GenerateSig(argv[0]);
                 if (s == GroupNotFoundError)
-                {
                     Info::GroupNotFound();
-                }
-                else if (s == OpenProcessError) {
+                else if (s == OpenProcessError)
                     Info::OpenProcessError();
-                }
             }
         }
 
         if (GetAsyncKeyState(VK_END))
-        {
             return 0;
-        }
     }
-
     return 0;
 }
 // TODO 
