@@ -4,14 +4,10 @@
 class Proc
 {
 public:
-	static PWTS_PROCESS_INFO procInfo;			// using this to hold all the processes
-	static DWORD  pCount;								// this will hold all the process count
+	static PWTS_PROCESS_INFO procInfo;
+	static DWORD  pCount;			
 public:
-	static void GetProcId();
 	static void GetProcHandle();
-	static bool GetProcessList();
-	static void GetProcessName(DWORD processID);
-
+	static void GetProcId();
 	static bool ProcessWalker();
-
 };

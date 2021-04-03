@@ -163,19 +163,7 @@ int main()
             }
             if (choice == ListProgress)
             {
-                /*
-                g_procList = {};
-                Proc::GetProcessList();
-                Utils::SortByDictOrder();
-
-                for (int i = 0; i < g_procList.size(); i++) {
-                    std::cout << std::dec <<  i << " - " << g_procList[i] << std::endl;
-                }
-                std::cout << std::endl;
-                */
                 Proc::ProcessWalker();
-                // TODO
-                // Change sort algorithm
             }
             if (choice == ListGroup)
             {
@@ -270,4 +258,3 @@ int main()
 }
 // TODO 
 // + Delete group
-// + sort progresses
