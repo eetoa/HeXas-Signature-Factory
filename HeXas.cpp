@@ -147,6 +147,7 @@ int main()
     while (1)
     {
         SetConsoleTextAttribute(g_hConsole, 8);
+        std::cout << "$ ";
         // get input
         std::string preHandle_argv = "";
         std::getline(std::cin, preHandle_argv);
