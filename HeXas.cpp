@@ -27,6 +27,11 @@ Option Parse(std::vector<std::string> cmd)
         Factory::AddGroup(cmd[1]);
         return NewGroup;
     }
+    if (len == 2 && !strcmp(cmd[0].c_str(), "show"))                                        // show group
+    {
+        Factory::ShowGroup(cmd[1]);
+        return ShowGroup;
+    }
     if (len == 2 && !strcmp(cmd[0].c_str(), "merge"))                                       // merge group
     {
         Factory::MergeSigs(cmd[1]);

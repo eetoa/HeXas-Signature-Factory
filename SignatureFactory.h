@@ -15,11 +15,12 @@ public:
 	static std::unordered_map<std::string, std::string>  ProductMap;
 
 public:
-	static bool GenerateSig(std::string);								
-	static bool AddGroup(std::string group);							// hexas new group
-	static bool UpdateSigMap(std::string group, std::string sig);		// hexas groupName -p cod.exe -a 0x1708E3 -s 0x8
-	static bool MergeSigs(std::string group);							// hexas merge group
-	static bool GetProduct(std::string group);							// hexas get group
+	static bool AddGroup(std::string group);							// new group
+	static bool ShowGroup(std::string group);							// show group
+	static bool GenerateSig(std::string);
+	static bool UpdateSigMap(std::string group, std::string sig);		// group -p cod.exe -a 0x1708E3 -s 0x8
+	static bool MergeSigs(std::string group);							// merge group
+	static bool GetProduct(std::string group);							// get group
 
 private:
 	static std::string Merge(std::vector<std::string>);

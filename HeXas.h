@@ -22,11 +22,12 @@ enum Option
 {
 	GetProcList = 1,
 	NewGroup = 2,
-	MergeGroup = 3,
-	GetGroup = 4,
-	ReGenerateSig = 5,
-	GenerateSigByProcessName = 6,
-	GenerateSigByPrimarykey = 7,
+	ShowGroup = 3,
+	MergeGroup = 4,
+	GetGroup = 5,
+	ReGenerateSig = 6,
+	GenerateSigByProcessName = 7,
+	GenerateSigByPrimarykey = 8,
 	ErrorOption = -1,
 };
 

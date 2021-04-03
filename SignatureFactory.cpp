@@ -5,6 +5,42 @@ std::unordered_map<std::string, std::vector<std::string>>	Factory::sigMap;
 std::unordered_map<std::string, std::string>				Factory::ProductMap;
 
 
+
+
+
+// new group
+bool Factory::AddGroup(std::string group)
+{
+	// group exists
+	if (sigMap.count(group))
+	{
+		return false;
+	}
+	std::vector<std::string> sigContainer;
+	sigMap.insert({ group, sigContainer });
+	return true;
+}
+
+// show group
+bool Factory::ShowGroup(std::string group)
+{
+	std::unordered_map<std::string, std::vector<std::string>>::iterator iter;
+	iter = sigMap.find(group);
+	if (iter != sigMap.end())
+	{
+		// found it
+		for (int i = 0; i < iter->second.size(); i++)
+		{
+			std::cout << dye::on_light_blue(iter->second[i]) << std::endl;
+		}
+		std::cout << std::endl;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool Factory::GenerateSig(std::string group)
 {
 	Proc::GetProcId();
@@ -32,24 +68,10 @@ bool Factory::GenerateSig(std::string group)
 	std::cout << dye::on_light_blue(sig);
 	std::cout << std::endl << std::endl;
 
-	//UpdateSigMap(group, sig);
+	UpdateSigMap(group, sig);
 }
 
-
-// hexas new group
-bool Factory::AddGroup(std::string group)
-{
-	// group exists
-	if (sigMap.count(group))
-	{
-		return false;
-	}
-	std::vector<std::string> sigContainer;
-	sigMap.insert({ group, sigContainer });
-	return true;
-}
-
-// hexas group -p cod.exe -a 0x1708E3 -s 0x8
+// group -p cod.exe -a 0x1708E3 -s 0x8
 bool Factory::UpdateSigMap(std::string group, std::string sig)
 {
 	// group not exists
@@ -67,7 +89,7 @@ bool Factory::UpdateSigMap(std::string group, std::string sig)
 	return true;
 }
 
-// hexas merge group
+// merge group
 bool Factory::MergeSigs(std::string group)
 {
 	// group not exists
@@ -90,7 +112,7 @@ std::string Factory::Merge(std::vector<std::string>)
 	return "";
 }
 
-// hexas get group
+// get group
 bool Factory::GetProduct(std::string group)
 {
 	// group not exists
