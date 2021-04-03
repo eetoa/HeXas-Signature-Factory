@@ -15,9 +15,9 @@ std::vector<std::string> g_procList;
 Option Parse(std::vector<std::string> cmd)
 {
     int len = cmd.size();
-    if (len != 1 && len != 2 && len != 4 && len != 7) return ErrorOption;
+    if (len != 2 && len != 4 && len != 7) return ErrorOption;
 
-    if (len == 1 && !strcmp(cmd[0].c_str(), "ls"))                                          // ls
+    if (len == 2 && !strcmp(cmd[0].c_str(), "ls") && !strcmp(cmd[1].c_str(), "-p"))         // ls progresses
     {
         return GetProcList;
     }
