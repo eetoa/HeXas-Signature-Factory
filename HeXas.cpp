@@ -11,12 +11,15 @@ std::vector<std::string> argv;
 std::vector<std::string> g_procList;
 
 
-
 Option Parse(std::vector<std::string> cmd)
 {
     int len = cmd.size();
-    if (len != 2 && len != 4 && len != 7) return ErrorOption;
+    if (len != 1 && len != 2 && len != 4 && len != 7) return ErrorOption;
 
+    if (len == 1 && !strcmp(cmd[0].c_str(), "--help"))
+    {
+        return ShowHelp;
+    }
     if (len == 2 && !strcmp(cmd[0].c_str(), "ls") && !strcmp(cmd[1].c_str(), "-p"))         // ls progresses
     {
         return ListProgress;
@@ -61,11 +64,6 @@ Option Parse(std::vector<std::string> cmd)
         g_address = (uintptr_t)add;
         return ReGenerateSig;
     }
-    /*
-    for (int i = 0; i < argc; i++) {
-        std::cout << i << " - " << argv[i] << std::endl;
-    }
-    */
     if (len == 7 && !strcmp(cmd[1].c_str(), "-p") && !strcmp(cmd[3].c_str(), "-a") && !strcmp(cmd[5].c_str(), "-s")) {   // hexas -p [name or key] -a [address] -s [size]
         //std::cout << argc << std::endl;
 
@@ -141,7 +139,7 @@ int main()
 
     HANDLE g_hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    SetConsoleTitleA("HeXas Signature Maker");
+    SetConsoleTitleA("HeXas Signature Factory");
     SetConsoleTextAttribute(g_hConsole, 8);
 
     while (1)
@@ -152,14 +150,14 @@ int main()
         std::string preHandle_argv = "";
         std::getline(std::cin, preHandle_argv);
         argv = {};
-        if (!ParseArgument(preHandle_argv)) Info::printHelp();
+        if (!ParseArgument(preHandle_argv)) Info::Help();
         else 
         {
             // parse option
             Option choice = Parse(argv);
-            if (choice == ErrorOption)
+            if (choice == ErrorOption || choice == ShowHelp)
             {
-                Info::printHelp();
+                Info::Help();
             }
             if (choice == ListProgress)
             {
@@ -176,43 +174,65 @@ int main()
             }
             if (choice == ListGroup)
             {
-                Factory::ListGroup();
+                if (Factory::ListGroup() == NoneGroup)
+                    Info::NoneGroup();
             }
             if (choice == NewGroup)
             {
-                Factory::AddGroup(argv[1]);
+                if (Factory::AddGroup(argv[1]) == GroupExistsError)
+                    Info::GroupExistsError();
             }
             if (choice == ShowGroup)
             {
-                Factory::ShowGroup(argv[1]);
+                if (Factory::ShowGroup(argv[1]) == GroupNotFoundError)
+                    Info::GroupNotFound();
             }
             if (choice == MergeGroup)
             {
-                Factory::MergeGroup(argv[1]);
+                if (Factory::MergeGroup(argv[1]) == GroupNotFoundError)
+                    Info::GroupNotFound();
             }
             if (choice == GetGroup)
             {
-                Factory::GetProduct(argv[1]);
+                if (Factory::GetProduct(argv[1]) == GroupNotFoundError)
+                    Info::GroupNotFound();
             }
             if (choice == ShowAllGroup)
             {
-                Factory::ShowAllGroup();
+                if (Factory::ShowAllGroup() == NoneGroup)
+                    Info::NoneGroup();
             }
             if (choice == MergeAllGroup)
             {
-                Factory::MergeAllGroup();
+                if (Factory::MergeAllGroup() == NoneGroup)
+                    Info::NoneGroup();
             }
             if (choice == GetAllGroup)
             {
-                Factory::GetAllProduct();
+                if (Factory::GetAllProduct() == NoneGroup)
+                    Info::NoneGroup();
             }
             if (choice == ReGenerateSig)
             {
-                Factory::GenerateSig(argv[0]);
+                Status s = Factory::GenerateSig(argv[0]);
+                if (s == GroupNotFoundError)
+                { 
+                    Info::GroupNotFound();
+                }
+                else if (s == OpenProcessError){
+                    Info::OpenProcessError();
+                }
             }
             if (choice == GenerateSigByProcessName)
             {
-                Factory::GenerateSig(argv[0]);
+                Status s = Factory::GenerateSig(argv[0]);
+                if (s == GroupNotFoundError)
+                {
+                    Info::GroupNotFound();
+                }
+                else if (s == OpenProcessError) {
+                    Info::OpenProcessError();
+                }
             }
             if (choice == GenerateSigByPrimarykey)
             {
@@ -220,13 +240,20 @@ int main()
                 Proc::GetProcessList();
                 Utils::SortByDictOrder();
 
-                if (!g_procList.size()) Info::printHelp();
+                if (!g_procList.size()) Info::Help();
 
                 g_procName = g_procList[g_key];
-                Factory::GenerateSig(argv[0]);
+
+                Status s = Factory::GenerateSig(argv[0]);
+                if (s == GroupNotFoundError)
+                {
+                    Info::GroupNotFound();
+                }
+                else if (s == OpenProcessError) {
+                    Info::OpenProcessError();
+                }
             }
         }
-
 
         if (GetAsyncKeyState(VK_END))
         {

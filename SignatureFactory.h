@@ -8,6 +8,7 @@ enum  Status
 	NoneGroup = 2,
 	GroupExistsError = 3,
 	SigNotFoundError = 4,
+	OpenProcessError = 5,
 };
 
 class Factory
@@ -32,4 +33,16 @@ public:
 private:
 	static std::string Merge(std::vector<std::string>);
 };
+
+
+class Info {
+public:
+	static void Help();
+	static void GroupNotFound();
+	static void NoneGroup();
+	static void GroupExistsError();
+	static void SigNotFoundError();
+	static void OpenProcessError();
+};
+
 

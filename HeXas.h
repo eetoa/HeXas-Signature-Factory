@@ -1,4 +1,5 @@
 
+
 extern HANDLE g_hConsole;
 extern std::string g_procName;
 extern uintptr_t g_address;
@@ -9,19 +10,10 @@ extern DWORD	g_procId;
 extern std::vector<std::string> argv;
 extern std::vector<std::string> g_procList;
 
-namespace Info {
-
-	using namespace std;
-	inline void printHelp()
-	{
-		cout << "Help Information" << endl << endl;
-	}
-}
-
-
 
 enum Option
 {
+	ShowHelp = 0,
 	ListProgress = 1,
 	ListGroup = 2,
 	NewGroup = 3,
